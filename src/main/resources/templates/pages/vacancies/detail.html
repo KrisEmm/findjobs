@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns:th="http://www.thymeleaf.org"  
+      xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
+        <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet"/>
+        <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet"/>
+        <title>FindJob | [[${vacancy.name}]]</title>
+    </head>
+    <body>
+        <header th:insert="components/navbar.html::navbar"></header>
+
+        <main role="main">
+            <hr/>
+            <div class="container"> 
+
+                <div class="row">
+                    <div class="col-md-3">            
+                        <img class="rounded mx-auto d-block" th:src="@{/images/{image} (image=${vacancy.image})}" alt="Generic placeholder image" width="220" height="220"/>            
+                    </div>
+                    <div class="col-md-9">
+                        <div class="card">
+                            <h4 class="card-header">Aplicar para <strong th:text="${vacancy.name}"></strong></h4>              
+                            <div class="card-body">
+                                <h5 class="card-title"><strong>Categoría: </strong> <span th:text="${vacancy.category.name}"></span></h5>
+                                <h6 class="card-title"><strong>Publicado: </strong> <span th:text="${#temporals.format(vacancy.published, 'dd-MMMM-yyyy')}"></span></h6>                
+                                <h6 class="card-title"><strong>Salario Ofrecido: </strong><span th:text="${vacancy.salary}"></span></h6>
+                                <p class="card-text" th:text="${vacancy.description}"></p>
+
+                                <div class="card bg-light mb-3" >
+                                    <div class="card-body">
+                                        <h5 class="card-title">Detalles de la oferta de trabajo</h5>
+                                        <p class="card-text" th:utext="${vacancy.details}"></p>
+                                    </div>
+                                </div>   
+                                <a class="btn btn-primary" href="#" role="button" title="Quiero aplicar para esta oferta de trabajo."><i class="fas fa-file" aria-hidden="true"></i> Aplicar</a>                            
+                            </div>
+                        </div>  
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+        <footer class="footer" th:insert="components/footer.html::footer"></footer>
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+    </body>
+</html>

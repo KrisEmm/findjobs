@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns:th="http://www.thymeleaf.org"  
+      xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
+        <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet" type="text/css"/>
+        <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet" type="text/css"/>
+        <link href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" rel="stylesheet" type="text/css"/>
+        <title>FindJob | Vacantes</title>
+    </head>
+    <body>
+        <header th:insert="components/navbar.html::navbar"></header>  
+
+        <main role="main">     
+            <hr/>
+            <div class="container"> 
+
+                <div class="card">
+                    <h4 class="card-header"><strong>Listado de Ofertas de Trabajo</strong></h4>              
+                    <div class="card-body">
+                        <a class="btn btn-primary" th:href="@{/vacancies/add}" title="Crear nueva Oferta de Trabajo" role="button"><i class="fas fa-plus" aria-hidden="true"></i> Nueva</a>            
+                        <hr/>
+                        <div th:if="${message != null}" th:text="${message}" id="alerts" class="alert alert-success" role="alert"></div>
+                        <table class="table table-hover">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col">Categoría</th>
+                                    <th scope="col">Nombre</th>                  
+                                    <th scope="col">Fecha Pub.</th>
+                                    <th scope="col">Estatus</th>
+                                    <th scope="col">Destacada</th>
+                                    <th scope="col">Operaciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="vacancy:${vacancies}">
+                                    <td th:text="${vacancy.category.name}"></td>
+                                    <td th:text="${vacancy.name}"></td>                  
+                                    <td th:text="${vacancy.published}"></td>
+                                    <td th:text="${vacancy.status}"></td>
+                                    <td th:text="${vacancy.outstanding == 1 ? 'Si' : 'No'}"></td>
+                                    <td>
+                                        <a th:href="@{/vacancies/edit/{id} (id = ${vacancy.id})}" class="btn btn-success btn-sm" role="button" title="Editar el registro."><i class="fas fa-pencil-alt" aria-hidden="true"></i></a>
+                                        <a th:href="@{/vacancies/delete/{id} (id = ${vacancy.id})}" onclick="return confirm('¿Estas seguro?')" class="btn btn-success btn-sm" role="button" title="Eliminar el registro."><i class="fas fa-trash" aria-hidden="true"></i></a>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                        <nav th:if="${vacancies.totalPages>0}" aria-label="Page navigation">
+                            <ul class="pagination">
+                                <li class="page-item">
+                                    <a th:href="@{/vacancies/list(page=${vacancies.number - 1})}" class="page-link">Anterior</a>
+                                </li>
+                                <li class="page-item">
+                                    <a th:href="@{/vacancies/list(page=${vacancies.number + 1})}" class="page-link">Siguiente</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div> <!-- /container -->
+
+        </main>
+
+        <footer class="footer" th:insert="components/footer.html::footer"></footer>
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+        <script>
+            const $alerts = document.querySelector("#alerts");
+            if($alerts){
+                setTimeout(function(){
+                    $alerts.remove();
+                },3000)
+            }
+        </script>
+    </body>
+</html>
